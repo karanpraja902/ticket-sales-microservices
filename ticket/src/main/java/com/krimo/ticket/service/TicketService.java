@@ -3,7 +3,7 @@ package com.karan.ticket.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karan.ticket.data.Event;
-import com.karan.ticket.data.FullSectionsCollection;
+import com.karan.ticket.data.ReturnObject;
 import com.karan.ticket.data.Ticket;
 import com.karan.ticket.dto.TicketDTO;
 import com.karan.ticket.exception.ApiRequestException;
@@ -28,7 +28,7 @@ public class TicketService {
     private final ObjectMapper objectMapper;
     private final TicketRepository ticketRepository;
 
-    public Ticket buyTicket(TicketDTO ticketDTO) throws JsonProcessingException {
+    public synchronized ReturnObject buyTicket(TicketDTO ticketDTO) throws JsonProcessingException {
 
         final String errorMsg = String.format("Tickets for %s section are sold out.", ticketDTO.getSection());
 
@@ -36,8 +36,8 @@ public class TicketService {
 
         final String uri = "http://localhost:8081/api/v1/event/%s/attendees";
 
-
-        FullSectionsCollection fullSections = webClient
+        try {
+            webClient
                     .put()
                     .uri(String.format(uri, ticketDTO.getEventCode()))
                     .header(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -46,13 +46,11 @@ public class TicketService {
                     .retrieve()
                     .onStatus(httpStatus -> httpStatus.value() == 400,
                             error -> Mono.error(new ApiRequestException(errorMsg)))
-                    .bodyToMono(FullSectionsCollection.class)
-                    .block();
+                    .bodyToFlux(Void.class)
+                    .blockFirst();
 
-        if(fullSections!=null) {
-            if (fullSections.getSections().contains(ticketDTO.getSection())) {
-                return null;
-            }
+        } catch (ApiRequestException e) {
+            return new ReturnObject(errorMsg);
         }
 
         String ticketCode = UUID.randomUUID().toString();
@@ -77,7 +75,7 @@ public class TicketService {
         event.setTickets(tickets);
         ticketRepository.save(event);
 
-        return ticket;
+        return new ReturnObject(ticket);
     }
 
     public List<Event> allEvents () {

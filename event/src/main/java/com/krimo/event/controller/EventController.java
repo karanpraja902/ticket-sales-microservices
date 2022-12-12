@@ -2,7 +2,6 @@ package com.karan.event.controller;
 
 import com.karan.event.data.Event;
 import com.karan.event.dto.EventDTO;
-import com.karan.event.dto.FullSectionsCollection;
 import com.karan.event.dto.TicketDTO;
 import com.karan.event.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -53,10 +52,10 @@ public class EventController {
 
 
     @PutMapping(path = "{eventCode}/attendees")
-    public ResponseEntity<FullSectionsCollection> addAttendees(@PathVariable("eventCode") String eventCode,
+    public ResponseEntity<Object> addAttendees(@PathVariable("eventCode") String eventCode,
                                                                @RequestBody TicketDTO ticketDTO) {
-        FullSectionsCollection fsc = eventService.addAttendee(eventCode, ticketDTO.getSection());
-        return new ResponseEntity<>(fsc, HttpStatus.OK);
+        eventService.addAttendee(eventCode, ticketDTO.getSection());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

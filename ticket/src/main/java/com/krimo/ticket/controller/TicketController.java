@@ -2,6 +2,7 @@ package com.karan.ticket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karan.ticket.data.Event;
+import com.karan.ticket.data.ReturnObject;
 import com.karan.ticket.data.Ticket;
 import com.karan.ticket.dto.TicketDTO;
 import com.karan.ticket.service.TicketService;
@@ -20,9 +21,11 @@ public class TicketController {
     private final TicketService ticketService;
 
     @PostMapping()
-    public ResponseEntity<Ticket> buyTicket(@RequestBody TicketDTO ticketDTO) throws JsonProcessingException {
-        Ticket ticket = ticketService.buyTicket(ticketDTO);
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
+    public ResponseEntity<ReturnObject> buyTicket(@RequestBody TicketDTO ticketDTO) throws JsonProcessingException {
+        ReturnObject returnObject = ticketService.buyTicket(ticketDTO);
+
+        return new ResponseEntity<>(returnObject, HttpStatus.OK);
+
     }
 
     @GetMapping(path = "/all")

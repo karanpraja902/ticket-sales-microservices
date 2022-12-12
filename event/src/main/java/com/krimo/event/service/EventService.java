@@ -3,17 +3,17 @@ package com.karan.event.service;
 import com.karan.event.data.Event;
 import com.karan.event.data.Section;
 import com.karan.event.dto.EventDTO;
-import com.karan.event.dto.FullSectionsCollection;
 import com.karan.event.exception.ApiRequestException;
 import com.karan.event.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
-public class EventService {
+public class EventService{
 
     private final EventRepository eventRepository;
 
@@ -48,7 +48,7 @@ public class EventService {
         eventRepository.save(updatedEvent);
     }
 
-    public FullSectionsCollection addAttendee(String eventCode, Section section) {
+    public synchronized void addAttendee(String eventCode, Section section) {
 
         // Sections that have already reached max capacity
         Collection<Section> fullSectionsCollection = new ArrayList<>();
@@ -70,14 +70,14 @@ public class EventService {
         }
 
         if (seatAttendee.containsKey(section)) {
-            seatAttendee.put(section, seatAttendee.get(section)+1);
+            AtomicInteger integer = new AtomicInteger(seatAttendee.get(section));
+            seatAttendee.put(section, integer.incrementAndGet());
         } else
             seatAttendee.put(section, 1);
 
         event.setRegisteredAttendees(seatAttendee);
         eventRepository.save(event);
 
-        return new FullSectionsCollection(fullSectionsCollection);
     }
 
     public void deleteEvent(String eventCode) {
