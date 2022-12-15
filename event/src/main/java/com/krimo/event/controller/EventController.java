@@ -1,7 +1,6 @@
 package com.karan.event.controller;
 
 import com.karan.event.data.Event;
-import com.karan.event.data.Section;
 import com.karan.event.dto.EventDTO;
 import com.karan.event.dto.TicketDTO;
 import com.karan.event.service.EventService;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -54,10 +52,10 @@ public class EventController {
 
 
     @PutMapping(path = "{eventCode}/attendees")
-    public ResponseEntity<Collection<Section>> addAttendees(@PathVariable("eventCode") String eventCode,
-                                                            @RequestBody TicketDTO ticketDTO) {
-        Collection<Section> fullSections = eventService.addAttendee(eventCode, ticketDTO.getSection());
-        return new ResponseEntity<>(fullSections, HttpStatus.OK);
+    public ResponseEntity<Object> addAttendees(@PathVariable("eventCode") String eventCode,
+                                                               @RequestBody TicketDTO ticketDTO) {
+        eventService.addAttendee(eventCode, ticketDTO.getSection());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
