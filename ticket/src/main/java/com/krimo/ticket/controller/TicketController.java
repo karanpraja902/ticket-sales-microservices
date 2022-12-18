@@ -1,17 +1,16 @@
 package com.karan.ticket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.karan.ticket.data.Event;
+import com.karan.ticket.dto.EventList;
 import com.karan.ticket.dto.ReturnObject;
-import com.karan.ticket.data.Ticket;
 import com.karan.ticket.dto.TicketDTO;
+import com.karan.ticket.dto.TicketList;
 import com.karan.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/ticket")
@@ -33,14 +32,13 @@ public class TicketController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Event>> allEvents() {
-        List<Event> events = ticketService.allEvents();
-        return new ResponseEntity<>(events, HttpStatus.OK);
+    public ResponseEntity<EventList> allEvents() {
+        return new ResponseEntity<>(ticketService.allEvents(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{eventCode}")
-    public ResponseEntity<List<Ticket>> eventTickets(@PathVariable("eventCode") String eventCode) {
-        List<Ticket> tickets = ticketService.eventTickets(eventCode);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    public ResponseEntity<TicketList> eventTickets(@PathVariable("eventCode") String eventCode) {
+        return new ResponseEntity<>(ticketService.eventTickets(eventCode), HttpStatus.OK);
     }
+
 }
