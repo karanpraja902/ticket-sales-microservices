@@ -2,12 +2,15 @@ package com.karan.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.karan.event.data.Section;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventDTO {
 
     private String venue;

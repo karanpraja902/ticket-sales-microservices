@@ -2,9 +2,12 @@ package com.karan.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.karan.event.data.Section;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TicketDTO {
 
     @JsonProperty("event_code")
