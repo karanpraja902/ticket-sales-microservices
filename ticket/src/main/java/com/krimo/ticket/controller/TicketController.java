@@ -1,10 +1,7 @@
 package com.karan.ticket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.karan.ticket.dto.EventList;
-import com.karan.ticket.dto.ReturnObject;
-import com.karan.ticket.dto.TicketDTO;
-import com.karan.ticket.dto.TicketList;
+import com.karan.ticket.dto.*;
 import com.karan.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +17,8 @@ public class TicketController {
     private final TicketService ticketService;
 
     @PostMapping()
-    public ResponseEntity<Object> buyTicket(@RequestBody TicketDTO ticketDTO) throws JsonProcessingException {
-        ReturnObject returnObject = ticketService.buyTicket(ticketDTO);
+    public ResponseEntity<Object> buyTicket(@RequestBody CustomerDTO customerDTO) throws JsonProcessingException {
+        ReturnObject returnObject = ticketService.buyTicket(customerDTO);
 
         if (returnObject.getTicket() == null) {
             return new ResponseEntity<>(returnObject.getErrorMsg(), HttpStatus.BAD_REQUEST);
