@@ -1,6 +1,5 @@
 package com.karan.ticket.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karan.ticket.dto.*;
 import com.karan.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class TicketController {
     private final TicketService ticketService;
 
     @PostMapping()
-    public ResponseEntity<Object> buyTicket(@RequestBody CustomerDTO customerDTO) throws JsonProcessingException {
+    public ResponseEntity<Object> buyTicket(@RequestBody CustomerDTO customerDTO) {
         ReturnObject returnObject = ticketService.buyTicket(customerDTO);
 
         if (returnObject.getTicket() == null) {

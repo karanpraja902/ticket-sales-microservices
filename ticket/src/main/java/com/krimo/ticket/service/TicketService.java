@@ -4,8 +4,11 @@ import com.karan.ticket.client.EventClient;
 import com.karan.ticket.data.Event;
 import com.karan.ticket.dto.*;
 import com.karan.ticket.data.Ticket;
+import com.karan.ticket.exception.ApiRequestException;
 import com.karan.ticket.repository.TicketRepository;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +26,13 @@ public class TicketService {
 
         TicketDTO ticketDTO = new TicketDTO(customerDTO.getEventCode(),customerDTO.getSection());
 
-        eventClient.addAttendees(ticketDTO.getEventCode(), ticketDTO);
+        try {
+            eventClient.addAttendees(ticketDTO.getEventCode(), ticketDTO);
+        } catch (FeignException.BadRequest e) {
+            return new ReturnObject(String.format("Section %s is already full.", customerDTO.getSection()));
+        } catch (FeignException e) {
+            return new ReturnObject("Sorry, we cannot process your request as of the moment. Please come back later.");
+        }
 
         String ticketCode = UUID.randomUUID().toString();
 
