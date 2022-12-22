@@ -1,7 +1,6 @@
 package com.karan.event.data;
 
 import com.karan.event.dto.EventDTO;
-import com.karan.event.dto.TicketDTO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

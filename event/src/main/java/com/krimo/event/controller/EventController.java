@@ -1,8 +1,8 @@
 package com.karan.event.controller;
 
 import com.karan.event.data.Event;
+import com.karan.event.data.Section;
 import com.karan.event.dto.EventDTO;
-import com.karan.event.dto.TicketDTO;
 import com.karan.event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,10 +50,10 @@ public class EventController {
         return new ResponseEntity<>(eventCode, HttpStatus.OK);
     }
 
-    @PutMapping(path = "{eventCode}/attendees")
+    @PutMapping(path = "{eventCode}/attendees/{section}")
     public ResponseEntity<Object> addAttendees(@PathVariable("eventCode") String eventCode,
-                                                               @RequestBody TicketDTO ticketDTO) {
-        eventService.addAttendee(eventCode, ticketDTO.getSection());
+                                               @PathVariable("section") Section section){
+        eventService.addAttendee(eventCode, section);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
