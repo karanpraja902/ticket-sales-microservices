@@ -6,7 +6,6 @@ import com.karan.ticket.data.TicketDetailsPK;
 import com.karan.ticket.dto.TicketDetailsDTO;
 import com.karan.ticket.exception.ApiRequestException;
 import com.karan.ticket.repository.TicketDetailsRepository;
-import com.karan.ticket.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,6 @@ public interface TicketDetailsService {
 class TicketDetailsServiceImpl implements TicketDetailsService {
 
     private final TicketDetailsRepository ticketDetailsRepository;
-    private final TicketRepository ticketRepository;
-
     @Override
     public void setTicketDetails(Long eventId, TicketDetailsDTO ticketDetailsDTO) {
 
@@ -55,7 +52,7 @@ class TicketDetailsServiceImpl implements TicketDetailsService {
         else {
             ticketDetails = ticketDetailsRepository.findById(pk).orElseThrow();
 
-            if (ticketRepository.getSold(eventId, section) != 0) {
+            if (ticketDetails.getTotalSold() != 0) {
                 throw new ApiRequestException("Invalid request. Tickets have already been sold.");
             }
 
@@ -82,6 +79,7 @@ class TicketDetailsServiceImpl implements TicketDetailsService {
                 .section(ticketDetails.getPk().getSection())
                 .price(ticketDetails.getPrice())
                 .totalStock(ticketDetails.getTotalStock())
+                .totalSold(ticketDetails.getTotalSold())
                 .build();
     }
 }
