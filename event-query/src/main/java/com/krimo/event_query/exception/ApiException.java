@@ -1,4 +1,4 @@
-package com.karan.event_command.exception;
+package com.karan.event_query.exception;
 
 import org.springframework.http.HttpStatus;
 
