@@ -1,10 +1,10 @@
-package com.example.event_indexer.service;
+package com.karan.event_indexer.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.DeleteRequest;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
-import com.example.event_indexer.payload.BrokerMessage;
-import com.example.event_indexer.payload.Event;
+import com.karan.event_indexer.payload.BrokerMessage;
+import com.karan.event_indexer.payload.Event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
