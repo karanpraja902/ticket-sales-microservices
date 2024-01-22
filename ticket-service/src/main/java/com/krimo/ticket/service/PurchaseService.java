@@ -6,6 +6,7 @@ import com.karan.ticket.exception.ApiRequestException;
 import com.karan.ticket.models.Purchase;
 import com.karan.ticket.models.PurchaseStatus;
 import com.karan.ticket.models.Ticket;
+import com.karan.ticket.repository.EventRepository;
 import com.karan.ticket.repository.PurchaseRepository;
 import com.karan.ticket.repository.TicketRepository;
 import com.karan.ticket.utils.Utils;
@@ -38,21 +39,29 @@ class PurchaseServiceImpl implements PurchaseService {
     private final KafkaTemplate<String, String> kafka;
     private final PurchaseRepository purchaseRepository;
     private final TicketRepository ticketRepository;
+    private final EventRepository eventRepository;
 
     @Override
     public Set<Long> createPurchase(PurchaseRequest req) {
 
         // 1. Is event ticket present?
-        if (ticketRepository.findById(req.ticketId()).isEmpty()) throw new ApiRequestException(HttpStatus.BAD_REQUEST, "Ticket does not exist.");
+        if (ticketRepository.findById(req.ticketId()).isEmpty())
+            throw new ApiRequestException(HttpStatus.BAD_REQUEST, "Ticket does not exist.");
+
         Ticket ticket = ticketRepository.findById(req.ticketId()).get();
         log.info("Ticket retrieved: " + ticket);
 
-        // 2. Is event ticket sold out?
+        // 2. Is event currently active?
+        if (eventRepository.findById(ticket.getEvent().getEventId()).isPresent()
+                && !eventRepository.findById(ticket.getEvent().getEventId()).get().getIsActive())
+            throw new ApiRequestException(HttpStatus.BAD_REQUEST, "Event is currently inactive.");
+
+        // 3. Is ticket sold out?
         if (ticket.getQtySold() >= ticket.getQtyStock()
                 && req.quantity() > (ticket.getQtyStock() - ticket.getQtySold()))
             throw new ApiRequestException(HttpStatus.BAD_REQUEST, "Ticket already sold out.");
 
-        // 3. Process ticket purchase if not sold out.
+        // 4. Process ticket purchase if not sold out.
         Set<Long> iDs = new HashSet<>();
         int i = 1;
         while (i <= req.quantity()) {
@@ -64,7 +73,11 @@ class PurchaseServiceImpl implements PurchaseService {
             i++;
         }
 
-        // 4. Publish to kafka
+        // Update ticket details
+        ticket.setQtySold(ticket.getQtySold() + req.quantity());
+        ticketRepository.save(ticket);
+
+        // 5. Publish to kafka
         Long eventId = ticket.getEvent().getEventId();
         String message = Utils.writeToJson(new PurchaseEvent(eventId, req.customerId(), LocalDateTime.now()));
         kafka.send(TOPIC, message);
