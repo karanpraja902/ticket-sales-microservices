@@ -6,7 +6,6 @@ import com.karan.account.exception.ApiRequestException;
 import com.karan.account.model.Account;
 import com.karan.account.dto.AccountDTO;
 import com.karan.account.repository.AccountRepository;
-import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -44,10 +43,6 @@ class AccountServiceImpl implements AccountService {
     private final ObjectMapper objectMapper;
 
     @Override
-    @Observed(name = "account.id",
-            contextualName = "creating-account",
-            lowCardinalityKeyValues = {"userId", "id"}
-    )
     public Long createAccount(AccountDTO dto) {
         log.info("Create account: " + dto);
         Account account = Account.create(
