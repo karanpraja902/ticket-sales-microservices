@@ -1,6 +1,5 @@
 package com.karan.ticket.repository;
 
-import com.karan.ticket.models.Event;
 import com.karan.ticket.models.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
