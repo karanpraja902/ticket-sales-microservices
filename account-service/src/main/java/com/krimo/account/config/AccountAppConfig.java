@@ -15,8 +15,8 @@ public class AccountAppConfig implements WebMvcConfigurer {
         registry.addViewController("/api/v3/accounts/swagger/ui").setViewName("forward:/index.html");
     }
 
-    @Bean
-    ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
-        return new ObservedAspect(observationRegistry);
-    }
+//    @Bean
+//    ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
+//        return new ObservedAspect(observationRegistry);
+//    }
 }
