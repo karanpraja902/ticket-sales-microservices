@@ -2,7 +2,6 @@ package com.karan.account.data;
 
 import com.karan.account.dto.AccountDTO;
 import com.karan.account.model.Account;
-import org.springframework.cache.Cache;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +16,9 @@ public class AccountFactory {
     private static final LocalDate BIRTHDAY = LocalDate.of(1989, Month.DECEMBER, 13);
 
     public static Account accountInit() {
-        return Account.create(LASTNAME, FIRSTNAME, EMAIL, PHONE, BIRTHDAY);
+        Account account = Account.create(LASTNAME, FIRSTNAME, EMAIL, PHONE, BIRTHDAY);
+        account.setId(1L);
+        return account;
     }
 
     public static AccountDTO dtoInit() {
