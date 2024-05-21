@@ -156,7 +156,7 @@ http://localhost:9000/api/v3/accounts
 
 ### API Documentation
 
-The services User Profile, Event, and Ticket have their own OpenAPI specifications. To access the API Docs, go to the following URLs:
+The services below have their own OpenAPI specifications. To access the API Docs, go to the following URLs:
 
 | Service               | Swagger UI                                               | API Docs                                               |
 | --------------------- | -------------------------------------------------------- | ------------------------------------------------------ |
