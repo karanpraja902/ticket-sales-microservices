@@ -36,6 +36,7 @@ postgres:
 # Logger configuration
 logging:
   pattern:
+    console: "%d %-5level %logger : %msg%n"
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
     org.springframework: debug
@@ -66,7 +67,7 @@ springdoc:
   api-docs:
     path: /account-service/api-docs
   swagger-ui:
-      path: /account-service/swagger-ui
+    path: /account-service/swagger-ui
 
 # Monitoring
 management:

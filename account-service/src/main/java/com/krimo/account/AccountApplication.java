@@ -11,8 +11,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @OpenAPIDefinition(info = @Info(title = "Account Service API", version = "3.0"))
 public class AccountApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AccountApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(AccountApplication.class, args);
+  }
 
 }

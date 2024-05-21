@@ -24,16 +24,15 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets:
-        - eureka:8761
-        - api-gateway:9000
-        - event-query:8080
-        - event-command:8081
-        - event-indexer:8086
-        - ticket:8082
-        - account:8084
-        - notification:8085
+          - eureka:8761
+          - api-gateway:9000
+          - event-query-service:8080
+          - event-command-service:8081
+          - ticket-service:8082
+          - account-service:8084
+          - notification-service:8085
+          - event-indexer-service:8086
   - job_name: postgres-exporter
     static_configs:
       - targets:
-        - postgres-exporter:9187
-
+          - postgres-exporter:9187
