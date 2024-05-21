@@ -3,4 +3,8 @@
 *.iws
 *.iml
 *.ipr
+.project
+.classpath
+.factorypath
+.settings/
 target/
