@@ -1,7 +1,11 @@
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
   cloud:
+    discovery:
+      enabled: true
     gateway:
       discovery:
         locator:
@@ -11,13 +15,13 @@ spring:
         - id: eureka
           uri: http://${eureka.instance.hostname}:8761
           predicates:
-          - Path=/eureka/web
+            - Path=/eureka/web
           filters:
-          - SetPath=/
+            - SetPath=/
         - id: eureka-static
           uri: http://${eureka.instance.hostname}:8761
           predicates:
-          - Path=/eureka/**
+            - Path=/eureka/**
 
         - id: account
           uri: lb://ACCOUNT-SERVICE
@@ -26,17 +30,17 @@ spring:
         - id: event-query
           uri: lb://EVENT-QUERY-SERVICE
           predicates:
-          - Path=/api/v3/events/**
-          - Method=GET
+            - Path=/api/v3/events/**
+            - Method=GET
         - id: event-command
           uri: lb://EVENT-COMMAND-SERVICE
           predicates:
-          - Path=/api/v3/events/**
-          - Method=POST, PUT, PATCH, DELETE
+            - Path=/api/v3/events/**
+            - Method=POST, PUT, PATCH, DELETE
         - id: ticket
           uri: lb://TICKET-SERVICE
           predicates:
-          - Path=/api/v3/event/**, /api/v3/tickets/**, /api/v3/purchases/**
+            - Path=/api/v3/event/**, /api/v3/tickets/**, /api/v3/purchases/**
 
         - id: account-swagger
           uri: lb://ACCOUNT-SERVICE
@@ -51,19 +55,19 @@ spring:
         - id: event-command-swagger
           uri: lb://EVENT-COMMAND-SERVICE
           predicates:
-          - Path=/event-command-service/swagger-ui**, /event-command-service/api-docs
-          - Method=GET
+            - Path=/event-command-service/swagger-ui**, /event-command-service/api-docs
+            - Method=GET
         - id: ticket-swagger
           uri: lb://TICKET-SERVICE
           predicates:
             - Path=/ticket-service/swagger-ui**, /ticket-service/api-docs
             - Method=GET
 
-
 # Logger configuration
 logging:
   pattern:
-    console: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    console: "%d %-5level %logger : %msg%n"
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
     org.springframework: info
     org.hibernate: debug

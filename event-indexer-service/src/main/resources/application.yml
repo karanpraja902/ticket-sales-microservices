@@ -10,6 +10,13 @@ spring:
     consumer:
       auto-offset-reset: earliest
 
+# Server configuration
+server:
+  port: 8086
+  error:
+    include-binding-errors: always
+    include-message: always
+
 # ES config
 elasticsearch:
   hostname: localhost
