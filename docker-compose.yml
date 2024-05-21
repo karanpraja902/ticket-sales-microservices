@@ -200,6 +200,7 @@ services:
     environment:
       - EUREKA_INSTANCE_HOSTNAME=eureka
       - POSTGRES_HOSTNAME=postgres
+      - REDIS_HOST=redis
     healthcheck:
       test: "curl --fail --silent localhost:8084/actuator/health | grep UP || exit 1"
       interval: 20s
@@ -316,4 +317,3 @@ volumes:
     name: prometheus_data
   grafana_data:
     name: grafana_data
-
