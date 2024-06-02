@@ -18,56 +18,55 @@ import java.io.IOException;
 
 @Service
 public class EventIndexerService {
-    Logger logger = LoggerFactory.getLogger(EventIndexerService.class);
-    private final ObjectMapper objectMapper;
-    private final ElasticsearchClient esClient;
-    private static final String IDX = "events";
+  Logger logger = LoggerFactory.getLogger(EventIndexerService.class);
+  private final ObjectMapper objectMapper;
+  private final ElasticsearchClient esClient;
+  private static final String IDX = "events";
 
-    @Autowired
-    public EventIndexerService(ElasticsearchClient esClient, ObjectMapper objectMapper) {
-        this.esClient = esClient;
-        this.objectMapper = objectMapper;
+  @Autowired
+  public EventIndexerService(ElasticsearchClient esClient, ObjectMapper objectMapper) {
+    this.esClient = esClient;
+    this.objectMapper = objectMapper;
+  }
+
+  @KafkaListener(topics = "event_db.public.event")
+  public void indexDocuments(String eventAgg) throws JsonProcessingException {
+    logger.info("Event Message: {}", eventAgg);
+
+    BrokerMessage msg = objectMapper.readValue(eventAgg, BrokerMessage.class);
+
+    if (msg == null)
+      return;
+
+    if (msg.isDeleted()) {
+      try {
+        esClient.delete(new DeleteRequest.Builder().index(IDX).id(String.valueOf(msg.event_id())).build());
+      } catch (IOException e) {
+        logger.debug("UNABLE TO DELETE RECORD: \n" + e);
+      }
+      return;
     }
 
-    @KafkaListener(topics = "event_db.public.event")
-    public void indexDocuments(String eventAgg) throws JsonProcessingException {
-        logger.info("Event Message: {}", eventAgg);
+    Event event = mapToEvent(msg);
 
-        BrokerMessage msg = objectMapper.readValue(eventAgg, BrokerMessage.class);
+    IndexRequest<Event> request = IndexRequest.of(i -> i
+        .index(IDX)
+        .id(String.valueOf(event.event_id()))
+        .document(event));
 
-        if (msg == null) return;
-
-        if (msg.isDeleted()) {
-            try {
-                esClient.delete(new DeleteRequest.Builder().index(IDX).id(String.valueOf(msg.event_id())).build());
-            } catch (IOException e) {
-                logger.debug("UNABLE TO DELETE RECORD: \n" + e);
-            }
-            return;
-        }
-
-        Event event = mapToEvent(msg);
-
-        IndexRequest<Event> request = IndexRequest.of(i -> i
-                .index(IDX)
-                .id(String.valueOf(event.event_id()))
-                .document(event)
-        );
-
-        try {
-            esClient.index(request);
-        } catch (IOException e) {
-            logger.debug("UNABLE TO INDEX RECORD: \n" + e);
-        }
-
+    try {
+      esClient.index(request);
+    } catch (IOException e) {
+      logger.debug("UNABLE TO INDEX RECORD: \n" + e);
     }
 
-    private Event mapToEvent(BrokerMessage msg) {
-        return new Event(
-                msg.event_id(), msg.name(), msg.banner(), msg.description(), msg.venue(),
-                String.valueOf(msg.startDateTime()), String.valueOf(msg.endDateTime()),
-                msg.organizer(), msg.tags(), msg.status()
-        );
-    }
+  }
+
+  private Event mapToEvent(BrokerMessage msg) {
+    return new Event(
+        msg.event_id(), msg.name(), msg.banner(), msg.description(), msg.venue(),
+        msg.startDateTime(), msg.endDateTime(),
+        msg.organizer(), msg.tags(), msg.status());
+  }
 
 }
