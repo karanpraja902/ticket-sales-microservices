@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>ticket-sales-microservices</artifactId>
-        <groupId>com.karan</groupId>
+        <groupId>com.karanpraja902</groupId>
         <version>3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -90,7 +90,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <mainClass>com.karan.event_command.EventCommandApplication</mainClass>
+                    <mainClass>com.karanpraja902.event_command.EventCommandApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

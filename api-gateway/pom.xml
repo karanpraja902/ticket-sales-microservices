@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ticket-sales-microservices</artifactId>
-        <groupId>com.karan</groupId>
+        <groupId>com.karanpraja902</groupId>
         <version>3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -40,7 +40,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.karan.gateway.ApiGatewayApplication</mainClass>
+                    <mainClass>com.karanpraja902.gateway.ApiGatewayApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

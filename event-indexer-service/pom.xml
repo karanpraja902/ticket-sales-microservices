@@ -5,7 +5,7 @@
 
     <parent>
         <artifactId>ticket-sales-microservices</artifactId>
-        <groupId>com.karan</groupId>
+        <groupId>com.karanpraja902</groupId>
         <version>3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -68,7 +68,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.7.5</version>
                 <configuration>
-                    <mainClass>com.karan.event_indexer.EventIndexerApplication</mainClass>
+                    <mainClass>com.karanpraja902.event_indexer.EventIndexerApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

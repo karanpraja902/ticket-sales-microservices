@@ -295,6 +295,7 @@ services:
       - eureka
     restart: always
     environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:29092
       - EUREKA_INSTANCE_HOSTNAME=eureka
       - POSTGRES_HOSTNAME=postgres
     healthcheck:
