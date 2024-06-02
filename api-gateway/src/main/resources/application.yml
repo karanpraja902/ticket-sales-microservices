@@ -7,10 +7,6 @@ spring:
     discovery:
       enabled: true
     gateway:
-      discovery:
-        locator:
-          lower-case-service-id: true
-          enabled: true
       routes:
         - id: eureka
           uri: http://${eureka.instance.hostname}:8761
@@ -45,22 +41,22 @@ spring:
         - id: account-swagger
           uri: lb://ACCOUNT-SERVICE
           predicates:
-            - Path=/account-service/swagger-ui**, /account-service/api-docs
+            - Path=/account-service/**
             - Method=GET
         - id: event-query-swagger
           uri: lb://EVENT-QUERY-SERVICE
           predicates:
-            - Path=/event-query-service/swagger-ui**, /event-query-service/api-docs
+            - Path=/event-query-service/**
             - Method=GET
         - id: event-command-swagger
           uri: lb://EVENT-COMMAND-SERVICE
           predicates:
-            - Path=/event-command-service/swagger-ui**, /event-command-service/api-docs
+            - Path=/event-command-service/**
             - Method=GET
         - id: ticket-swagger
           uri: lb://TICKET-SERVICE
           predicates:
-            - Path=/ticket-service/swagger-ui**, /ticket-service/api-docs
+            - Path=/ticket-service/**
             - Method=GET
 
 # Logger configuration

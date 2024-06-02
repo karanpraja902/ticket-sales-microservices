@@ -161,7 +161,7 @@ services:
       - tsm
 
   api-gateway:
-    image: gestanestle/api-gateway:3.0
+    image: karanpraja902/api-gateway:3.0
     container_name: api-gateway
     links:
       - eureka
@@ -174,7 +174,7 @@ services:
       - EUREKA_INSTANCE_HOSTNAME=eureka
 
   eureka:
-    image: gestanestle/eureka:3.0
+    image: karanpraja902/eureka:3.0
     container_name: eureka
     networks:
       - tsm
@@ -183,7 +183,7 @@ services:
     restart: always
 
   account-service:
-    image: gestanestle/account:3.0
+    image: karanpraja902/account:3.0
     container_name: account-service
     ports:
       - "8084:8084"
@@ -209,7 +209,7 @@ services:
       start_period: 40s
 
   event-command-service:
-    image: gestanestle/event-command:3.0
+    image: karanpraja902/event-command:3.0
     container_name: event-command-service
     ports:
       - "8081:8081"
@@ -232,7 +232,7 @@ services:
       - POSTGRES_HOSTNAME=postgres
 
   event-indexer-service:
-    image: gestanestle/event-indexer:3.0
+    image: karanpraja902/event-indexer:3.0
     container_name: event-indexer-service
     networks:
       - tsm
@@ -248,7 +248,7 @@ services:
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:29092
 
   event-query-service:
-    image: gestanestle/event-query:3.0
+    image: karanpraja902/event-query:3.0
     container_name: event-query-service
     ports:
       - "8080:8080"
@@ -265,7 +265,7 @@ services:
       - ELASTICSEARCH_HOSTNAME=elasticsearch
 
   notification-service:
-    image: gestanestle/notification:3.0
+    image: karanpraja902/notification:3.0
     container_name: notification-service
     networks:
       - tsm
@@ -282,7 +282,7 @@ services:
       - SERVERS_EVENT-SERVICE=http://event-query-service:8080
 
   ticket-service:
-    image: gestanestle/ticket:3.0
+    image: karanpraja902/ticket:3.0
     container_name: ticket-service
     ports:
       - "8082:8082"
@@ -295,6 +295,7 @@ services:
       - eureka
     restart: always
     environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:29092
       - EUREKA_INSTANCE_HOSTNAME=eureka
       - POSTGRES_HOSTNAME=postgres
     healthcheck:

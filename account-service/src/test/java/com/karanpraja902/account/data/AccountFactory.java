@@ -1,0 +1,32 @@
+package com.karanpraja902.account.data;
+
+import com.karanpraja902.account.dto.AccountDTO;
+import com.karanpraja902.account.model.Account;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+
+public class AccountFactory {
+
+    private static final String LASTNAME = "Swift";
+    private static final String FIRSTNAME = "Taylor";
+    private static final String EMAIL = "email@gmail.com";
+    private static final String PHONE = "+63123456789";
+    private static final LocalDate BIRTHDAY = LocalDate.of(1989, Month.DECEMBER, 13);
+
+    public static Account accountInit() {
+        Account account = Account.create(LASTNAME, FIRSTNAME, EMAIL, PHONE, BIRTHDAY);
+        account.setId(1L);
+        return account;
+    }
+
+    public static AccountDTO dtoInit() {
+        return new AccountDTO(1L, LASTNAME, FIRSTNAME, EMAIL, PHONE, BIRTHDAY, LocalDateTime.now());
+    }
+
+    public static AccountDTO updateDtoInit() {
+        return new AccountDTO(1L, "Sheesh", FIRSTNAME, EMAIL, PHONE, BIRTHDAY, LocalDateTime.now());
+    }
+
+}
