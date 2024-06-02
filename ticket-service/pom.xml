@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ticket-sales-microservices</artifactId>
-        <groupId>com.krimo</groupId>
+        <groupId>com.karanpraja902</groupId>
         <version>3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -94,7 +94,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <mainClass>com.krimo.ticket.TicketApplication</mainClass>
+                    <mainClass>com.karanpraja902.ticket.TicketApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
