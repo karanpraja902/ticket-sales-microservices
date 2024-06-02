@@ -17,7 +17,7 @@ public class EventOutbox {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
     @Column(nullable = false)
@@ -28,6 +28,7 @@ public class EventOutbox {
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
+
     public EventOutbox(String topic, String payload, LocalDateTime timestamp) {
         this.topic = topic;
         this.payload = payload;
